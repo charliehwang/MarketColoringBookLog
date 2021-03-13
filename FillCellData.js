@@ -1,10 +1,8 @@
 function runFillCellDataTest() {
   fillDateCells(cbSheet, dataVals)
-
   INDICES.forEach((indexName) => {
     fillAndColorIndividualIndices(indexName)
   })
-
   // const breadthData = getBreadthData(dataSheet, dataVals)
   // // const test = breadthData.reverse()
   // const breadthDataStats = getBreadthDataStats()
@@ -66,74 +64,13 @@ function setFormattingForIndividualIndiceCells(
     onlyCalculatedData.length,
     numCols
   )
+
   const styles = onlyCalculatedData.map((d, i) => {
     const [trendColor, ...rest] = onlyColors[i]
     const [ad, per, l8, l25, trend] = d
-    if (ad === LARGE_ACCUMULATION_DAY_LETTER) {
-      return [
-        TEXT_STYLE_LARGE_ACCUMULATION_DAY,
-        TEXT_STYLE_LARGE_ACCUMULATION_DAY,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-      ]
-    }
+    const stats = { ad, per, l8, l25 }
 
-    if (ad === SMALL_ACCUMULATION_DAY_LETTER) {
-      return [
-        TEXT_STYLE_SMALL_ACCUMULATION_DAY,
-        TEXT_STYLE_SMALL_ACCUMULATION_DAY,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-      ]
-    }
-
-    if (ad === SMALL_DISTRIBUTION_DAY_LETTER) {
-      return [
-        TEXT_STYLE_SMALL_DISTRIBUTION_DAY,
-        TEXT_STYLE_SMALL_DISTRIBUTION_DAY,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-      ]
-    }
-
-    if (ad === LARGE_DISTRIBUTION_DAY_LETTER) {
-      return [
-        TEXT_STYLE_LARGE_DISTRIBUTION_DAY,
-        TEXT_STYLE_LARGE_DISTRIBUTION_DAY,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-      ]
-    }
-
-    if (+per >= 0) {
-      return [
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_PERC_UP,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-      ]
-    } else if (+per <= 0) {
-      return [
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_PERC_DN,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-        TEXT_STYLE_MED_DARK,
-      ]
-    }
-
-    return [
-      TEXT_STYLE_MED_DARK,
-      TEXT_STYLE_MED_DARK,
-      TEXT_STYLE_MED_DARK,
-      TEXT_STYLE_MED_DARK,
-      TEXT_STYLE_MED_DARK,
-    ]
+    return getTextStyleForIndividualIndiceCells(stats)
   })
 
   range.setTextStyles(styles)
@@ -271,4 +208,72 @@ function fillDateCells(sheet, data) {
 
   const range = sheet.getRange(DATA_START_ROW, DATE_COL, onlyDates.length, 1)
   range.setValues(onlyDates)
+}
+
+function getTextStyleForIndividualIndiceCells(stats) {
+  if (stats.ad === LARGE_ACCUMULATION_DAY_LETTER) {
+    return [
+      TEXT_STYLE_LARGE_ACCUMULATION_DAY,
+      TEXT_STYLE_LARGE_ACCUMULATION_DAY,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+    ]
+  }
+
+  if (stats.ad === SMALL_ACCUMULATION_DAY_LETTER) {
+    return [
+      TEXT_STYLE_SMALL_ACCUMULATION_DAY,
+      TEXT_STYLE_SMALL_ACCUMULATION_DAY,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+    ]
+  }
+
+  if (stats.ad === SMALL_DISTRIBUTION_DAY_LETTER) {
+    return [
+      TEXT_STYLE_SMALL_DISTRIBUTION_DAY,
+      TEXT_STYLE_SMALL_DISTRIBUTION_DAY,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+    ]
+  }
+
+  if (stats.ad === LARGE_DISTRIBUTION_DAY_LETTER) {
+    return [
+      TEXT_STYLE_LARGE_DISTRIBUTION_DAY,
+      TEXT_STYLE_LARGE_DISTRIBUTION_DAY,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+    ]
+  }
+
+  if (+stats.per >= 0) {
+    return [
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_PERC_UP,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+    ]
+  } else if (+stats.per <= 0) {
+    return [
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_PERC_DN,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+      TEXT_STYLE_MED_DARK,
+    ]
+  }
+
+  return [
+    TEXT_STYLE_MED_DARK,
+    TEXT_STYLE_MED_DARK,
+    TEXT_STYLE_MED_DARK,
+    TEXT_STYLE_MED_DARK,
+    TEXT_STYLE_MED_DARK,
+  ]
 }

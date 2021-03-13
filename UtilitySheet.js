@@ -5,8 +5,7 @@ function runTestUtilitySheet() {
   //   headerRowData
   // )
   // console.log(headerIdxLocations)
-
-  getColDataFor("NAA50R", dataVals)
+  // getColDataFor("NAA50R", dataVals)
 }
 
 function getDataColNum(fieldName) {
