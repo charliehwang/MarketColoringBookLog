@@ -83,3 +83,22 @@ function calculateIndexData(indexName, headerIdxLocations, dataVals) {
   // console.log(calculatedColors)
   return { calculatedData, calculatedColors }
 }
+
+function getBreadthDataStats() {
+  return BREADTH_FIELDS.reduce((acc, fieldName) => {
+    const colData = getColDataFor(fieldName, dataVals)
+    const stats = calculateColumnDataStats(colData)
+    acc[fieldName] = acc[fieldName] ? acc[fieldName] : {}
+
+    acc[fieldName] = {
+      average: stats.avg,
+      stdDev: stats.stdDev,
+      posFirstStdDev: stats.avg + stats.stdDev,
+      posSecondStdDev: stats.avg + 2 * stats.stdDev,
+      negFirstStdDev: stats.avg - stats.stdDev,
+      negSecondStdDev: stats.avg - 2 * stats.stdDev,
+    }
+
+    return acc
+  }, {})
+}

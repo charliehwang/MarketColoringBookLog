@@ -13,8 +13,6 @@ const cbHeaders =
 const cbSubHeaders =
   cbLastCol && cbSheet.getRange(2, 1, 1, cbLastCol).getValues()[0]
 
-const INDICES = ["COMP", "SPX", "IWM"]
-
 const COLOR_HEX = {
   WHITE: "#FFF",
   WHITE70: "#B2B2B2",
@@ -87,6 +85,32 @@ const TREND = {
   VERY_BEARISH: COLOR_HEX.RED30,
 }
 
+const INDICES = ["COMP", "SPX", "IWM"]
+
+const BREADTH_FIELDS = [
+  "NAA50R",
+  "NAA150R",
+  "NAA200R",
+  "SPXA50R",
+  "SPXA150R",
+  "SPXA200R",
+  "NASI",
+  "NYMO",
+]
+
+const INDICES_MERGE_FROM_TO = ["AD", "TrendCnt"]
+const INDICES_MERGE_LENGTH = 5 // # of Cells from AD to TrendCnt
+const MERGE_CELLS_FROM_TO = [
+  [""],
+  INDICES_MERGE_FROM_TO,
+  INDICES_MERGE_FROM_TO,
+  INDICES_MERGE_FROM_TO,
+  ["NAA50R", "NYMO"],
+  ["CPC", "BEAR_AAII"],
+  ["Leaders"],
+  ["Notes"],
+]
+
 const COLORING_BOOK_HEADERS = [
   "Date",
   "COMP",
@@ -115,12 +139,12 @@ const COLORING_BOOK_SUB_HEADERS = [
   "L8",
   "L25",
   "TrendCnt",
-  "NA50R",
-  "SP50R",
-  "NA150R",
-  "SP150R",
-  "NA200R",
-  "SP200R",
+  "NAA50R",
+  "SPXA50R",
+  "NAA150R",
+  "SPXA150R",
+  "NAA200R",
+  "SPXA200R",
   "NASI",
   "NYMO",
   "CPC",
@@ -136,9 +160,6 @@ const HEADERS_ROW_NUM = 1
 const SUB_HEADERS_ROW_NUM = 2
 const DATA_START_ROW = SUB_HEADERS_ROW_NUM + 1
 const DATE_COL = 1
-
-const INDICES_MERGE_FROM_TO = ["AD", "TrendCnt"]
-const INDICES_MERGE_LENGTH = 5 // # of Cells from AD to TrendCnt
 
 const LARGE_DISTRIBUTION_DAY_LETTER = "D"
 const SMALL_DISTRIBUTION_DAY_LETTER = "d"

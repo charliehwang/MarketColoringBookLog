@@ -89,6 +89,7 @@ function setupColoringBook() {
 function setColoringBookColumnWidths() {
   const WIDER_WIDTH = 50
   const INDEX_WIDTH = 25
+  const WIDTH = 50
   cbSheet.setColumnWidths(1, 1, WIDER_WIDTH + 10)
   cbSheet.setColumnWidths(2, 5, INDEX_WIDTH)
   cbSheet.setColumnWidths(3, 1, WIDER_WIDTH) // COMP PER
@@ -96,24 +97,13 @@ function setColoringBookColumnWidths() {
   cbSheet.setColumnWidths(8, 1, WIDER_WIDTH) // SPX PER
   cbSheet.setColumnWidths(12, 5, INDEX_WIDTH)
   cbSheet.setColumnWidths(13, 1, WIDER_WIDTH) // IWM PER
-  cbSheet.setColumnWidths(17, 8, INDEX_WIDTH)
-  cbSheet.setColumnWidths(25, 6, INDEX_WIDTH)
+  cbSheet.setColumnWidths(17, 8, WIDTH)
+  cbSheet.setColumnWidths(25, 6, WIDTH)
   cbSheet.setColumnWidths(31, 1, 500)
   cbSheet.setColumnWidths(32, 1, 800)
 }
 
 function getMergeCellColsData(subHeaders, INDICES_MERGE_FROM_TO) {
-  const MERGE_CELLS_FROM_TO = [
-    [""],
-    INDICES_MERGE_FROM_TO,
-    INDICES_MERGE_FROM_TO,
-    INDICES_MERGE_FROM_TO,
-    ["NA50R", "NYMO"],
-    ["CPC", "BEAR_AAII"],
-    ["Leaders"],
-    ["Notes"],
-  ]
-
   let dupeCount = 0 // #TODO : Bad way to handle duplicate searches. Just doing this for now.
   return MERGE_CELLS_FROM_TO.map((d, i) => {
     // scan subHeaders for first instance of the col name
