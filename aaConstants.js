@@ -3,7 +3,12 @@ const cbSheet = SpreadsheetApp.getActive().getSheetByName("Coloring Book")
 
 const dataLastCol = dataSheet.getLastColumn()
 const dataLastRow = dataSheet.getLastRow()
-const dataHeaders = dataSheet.getRange(1, 1, 1, dataLastCol).getValues()
+const dataHeaderRange = dataSheet.getRange(1, 1, 1, dataLastCol)
+const dataHeaderVals = dataHeaderRange.getValues()
+const dataHeaders = dataHeaderVals ? dataHeaderVals[0] : undefined
+if (dataHeaders === undefined)
+  throw new Error("There are no headers in the Data sheet")
+
 const dataRange = dataSheet.getRange(1, 1, dataLastRow, dataLastCol)
 const dataVals = dataRange.getValues()
 
@@ -93,7 +98,6 @@ const BREADTH_FIELDS = [
   "NAA200R",
   "SPXA50R",
   "SPXA150R",
-  "SPXA200R",
   "NASI",
   "NYMO",
 ]
@@ -201,3 +205,5 @@ const TEXT_STYLE_PERC_DN = SpreadsheetApp.newTextStyle()
   .setBold(true)
   .setForegroundColor(COLOR_HEX.RED)
   .build()
+
+const BREADTH_PERC_ABOVE_MIDLINE = 50

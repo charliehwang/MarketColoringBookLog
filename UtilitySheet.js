@@ -23,9 +23,8 @@ function getCBColNum(fieldName) {
 function getDataIDX(fieldName) {
   if (!dataHeaders || dataHeaders.length === 0)
     throw new Error("No Data Headers Found")
-  const headers = dataHeaders[0]
   //Logger.log(headers)
-  return headers.indexOf(fieldName)
+  return dataHeaders.indexOf(fieldName)
 }
 
 function getHeaderIdxLocationsAsDictForIndexName(indexName, headerData) {

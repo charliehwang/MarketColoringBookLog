@@ -1,15 +1,14 @@
 function runFillCellDataTest() {
-  fillDateCells(cbSheet, dataVals)
-  INDICES.forEach((indexName) => {
-    fillAndColorIndividualIndices(indexName)
-  })
-  // const breadthData = getBreadthData(dataSheet, dataVals)
-  // // const test = breadthData.reverse()
-  // const breadthDataStats = getBreadthDataStats()
-  // colorBreadthCells(cbSheet, breadthData, breadthDataStats)
-  // const test = dataVals.reverse()
-  // const test = dataVals
-  // console.log(test)
+  // fillDateCells(cbSheet, dataVals)
+  // INDICES.forEach((indexName) => {
+  //   fillAndColorIndividualIndices(indexName)
+  // })
+
+  colorAndFillinBreadthCells(dataSheet, dataVals)
+
+  const breadthData = getBreadthData(dataSheet, dataVals)
+  const breadthDataStats = getBreadthDataStats()
+  colorBreadthCells(cbSheet, breadthData, breadthDataStats)
 }
 
 function fillAndColorIndividualIndices(indexName, sheet) {
@@ -150,21 +149,27 @@ function getBackgroundColorsForBreadth(breadthData, breadthDataStats) {
   return breadthData.map((arr) =>
     arr.map((val, i) => {
       const fieldName = BREADTH_FIELDS[i]
-      if (breadthDataStats[fieldName] === undefined)
-        throw new Error(`No breadth data stats for ${fieldName}`)
+      // if (breadthDataStats[fieldName] === undefined)
+      //   throw new Error(`No breadth data stats for ${fieldName}`)
 
-      const stats = breadthDataStats[fieldName]
+      // const stats = breadthDataStats[fieldName]
       const valNum = Number(val)
 
-      if (valNum >= stats.posSecondStdDev) {
-        return TREND.VERY_BULLISH
-      } else if (valNum >= stats.posFirstStdDev) {
+      if (valNum >= BREADTH_PERC_ABOVE_MIDLINE) {
         return TREND.BULLISH
-      } else if (valNum <= stats.negSecondStdDev) {
-        return TREND.VERY_BEARISH
-      } else if (valNum <= stats.negFirstStdDev) {
+      } else if (valNum < BREADTH_PERC_ABOVE_MIDLINE) {
         return TREND.BEARISH
       }
+
+      // if (valNum >= stats.posSecondStdDev) {
+      //   return TREND.VERY_BULLISH
+      // } else if (valNum >= stats.posFirstStdDev) {
+      //   return TREND.BULLISH
+      // } else if (valNum <= stats.negSecondStdDev) {
+      //   return TREND.VERY_BEARISH
+      // } else if (valNum <= stats.negFirstStdDev) {
+      //   return TREND.BEARISH
+      // }
 
       return COLOR_HEX.DARK_GREY
     })
@@ -175,9 +180,13 @@ function getBreadthData(sheet, data) {
   // const breadthStats = getBreadthDataStats()
   const firstField = BREADTH_FIELDS[0]
   const lastField = BREADTH_FIELDS[BREADTH_FIELDS.length - 1]
-  const startIdx = dataHeaders[0].indexOf(firstField)
+  const startIdx = dataHeaders.indexOf(firstField)
   const startCol = startIdx + 1
-  const endIdx = dataHeaders[0].indexOf(lastField)
+  const endIdx = dataHeaders.indexOf(lastField)
+  const fieldIdxsToFilter = dataHeaders
+    .map((h, i) => (h.match(/_/) ? i : undefined))
+    .filter((d) => d !== undefined) // don't want columns like "NASI_EMA20", "NASI_EMA10"
+
   // const endCol = endIdx + 1
   // const lastCol = COLORING_BOOK_SUB_HEADERS.indexOf(lastField) + 1
   const numCols = BREADTH_FIELDS.length
@@ -189,7 +198,11 @@ function getBreadthData(sheet, data) {
 
   return data.map((d) => {
     const filtered = d.filter((value, i) => {
-      if (i >= startIdx && i <= endIdx) {
+      if (
+        i >= startIdx &&
+        i <= endIdx &&
+        fieldIdxsToFilter.indexOf(i) === -1 // not in the filtered list
+      ) {
         return true
       }
       return false
