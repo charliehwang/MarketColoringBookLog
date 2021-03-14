@@ -106,3 +106,30 @@ function colorRange(sheet, startRow, startCol, numRows, numCols, colorsArr) {
   const range = sheet.getRange(startRow, startCol, numRows, numCols)
   range.setBackgrounds(colorsArr)
 }
+
+function getDataFromFieldNames(fieldNames, dataHeaders, dataVals) {
+  const firstField = fieldNames[0]
+  const lastField = fieldNames[fieldNames.length - 1]
+  const startIdx = dataHeaders.indexOf(firstField)
+  const startCol = startIdx + 1
+  const endIdx = dataHeaders.indexOf(lastField)
+
+  const breadthFieldIdxs = dataHeaders.reduce((acc, headerName, i) => {
+    if (fieldNames.indexOf(headerName) >= 0) acc.push(i)
+    return acc
+  }, [])
+
+  return filterDataWithFromIndexes(breadthFieldIdxs, dataVals)
+}
+
+function filterDataWithFromIndexes(wantedFieldIdxs, data) {
+  return data.map((d) => {
+    const filtered = d.filter((value, i) => {
+      if (wantedFieldIdxs.indexOf(i) !== -1) {
+        return true
+      }
+      return false
+    })
+    return filtered
+  })
+}
