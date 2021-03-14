@@ -5,8 +5,8 @@ const dataLastCol = dataSheet.getLastColumn()
 const dataLastRow = dataSheet.getLastRow()
 const dataHeaderRange = dataSheet.getRange(1, 1, 1, dataLastCol)
 const dataHeaderVals = dataHeaderRange.getValues()
-const dataHeaders = dataHeaderVals ? dataHeaderVals[0] : undefined
-if (dataHeaders === undefined)
+const DATA_HEADERS = dataHeaderVals ? dataHeaderVals[0] : undefined
+if (DATA_HEADERS === undefined)
   throw new Error("There are no headers in the Data sheet")
 
 const dataRange = dataSheet.getRange(1, 1, dataLastRow, dataLastCol)

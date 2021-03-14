@@ -180,12 +180,12 @@ function getBreadthData(sheet, data) {
   // const breadthStats = getBreadthDataStats()
   const firstField = BREADTH_FIELDS[0]
   const lastField = BREADTH_FIELDS[BREADTH_FIELDS.length - 1]
-  const startIdx = dataHeaders.indexOf(firstField)
+  const startIdx = DATA_HEADERS.indexOf(firstField)
   const startCol = startIdx + 1
-  const endIdx = dataHeaders.indexOf(lastField)
-  const fieldIdxsToFilter = dataHeaders
-    .map((h, i) => (h.match(/_/) ? i : undefined))
-    .filter((d) => d !== undefined) // don't want columns like "NASI_EMA20", "NASI_EMA10"
+  const endIdx = DATA_HEADERS.indexOf(lastField)
+  const fieldIdxsToFilter = DATA_HEADERS.map((h, i) =>
+    h.match(/_/) ? i : undefined
+  ).filter((d) => d !== undefined) // don't want columns like "NASI_EMA20", "NASI_EMA10"
 
   // const endCol = endIdx + 1
   // const lastCol = COLORING_BOOK_SUB_HEADERS.indexOf(lastField) + 1
@@ -193,7 +193,7 @@ function getBreadthData(sheet, data) {
 
   if (startIdx === -1 || endIdx === -1)
     throw new Error(
-      `Could not find either the firstField(${firstField}) or the lastField(${lastField}) in dataHeaders`
+      `Could not find either the firstField(${firstField}) or the lastField(${lastField}) in DATA_HEADERS`
     )
 
   return data.map((d) => {

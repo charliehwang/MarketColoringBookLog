@@ -21,10 +21,10 @@ function getCBColNum(fieldName) {
 }
 
 function getDataIDX(fieldName) {
-  if (!dataHeaders || dataHeaders.length === 0)
+  if (!DATA_HEADERS || DATA_HEADERS.length === 0)
     throw new Error("No Data Headers Found")
   //Logger.log(headers)
-  return dataHeaders.indexOf(fieldName)
+  return DATA_HEADERS.indexOf(fieldName)
 }
 
 function getHeaderIdxLocationsAsDictForIndexName(indexName, headerData) {
