@@ -85,38 +85,3 @@ function getBackgroundColorsForBreadth(breadthData, breadthDataStats) {
     })
   )
 }
-
-function getBreadthData(sheet, data) {
-  // const breadthStats = getBreadthDataStats()
-  const firstField = BREADTH_FIELDS[0]
-  const lastField = BREADTH_FIELDS[BREADTH_FIELDS.length - 1]
-  const startIdx = DATA_HEADERS.indexOf(firstField)
-  const startCol = startIdx + 1
-  const endIdx = DATA_HEADERS.indexOf(lastField)
-  const fieldIdxsToFilter = DATA_HEADERS.map((h, i) =>
-    h.match(/_/) ? i : undefined
-  ).filter((d) => d !== undefined) // don't want columns like "NASI_EMA20", "NASI_EMA10"
-
-  // const endCol = endIdx + 1
-  // const lastCol = COLORING_BOOK_SUB_HEADERS.indexOf(lastField) + 1
-  const numCols = BREADTH_FIELDS.length
-
-  if (startIdx === -1 || endIdx === -1)
-    throw new Error(
-      `Could not find either the firstField(${firstField}) or the lastField(${lastField}) in DATA_HEADERS`
-    )
-
-  return data.map((d) => {
-    const filtered = d.filter((value, i) => {
-      if (
-        i >= startIdx &&
-        i <= endIdx &&
-        fieldIdxsToFilter.indexOf(i) === -1 // not in the filtered list
-      ) {
-        return true
-      }
-      return false
-    })
-    return filtered
-  })
-}
