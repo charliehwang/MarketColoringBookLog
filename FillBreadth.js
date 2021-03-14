@@ -1,24 +1,17 @@
 function runFillBreadthTest() {
-  const breadthData = getBreadthPerAbove(dataVals)
-  console.log("ran")
+  // const breadthData = getBreadthPerAbove(dataVals)
+  // console.log("ran")
+
+  colorAndFillinBreadthCells(cbSheet, dataVals)
+  // const breadthDataStats = getBreadthDataStats()
+  // colorBreadthCells(cbSheet, breadthData, breadthDataStats)
 }
 
-function getBreadthPerAbove(dataVals) {
-  const FIELDS_BREADTH_PER_ABOVE = [
-    "NAA50R",
-    "SPXA50R",
-    "NAA150R",
-    "SPXA150R",
-    "NAA200R",
-    "SPXA200R",
-  ]
-
-  return getDataFromFieldNames(FIELDS_BREADTH_PER_ABOVE, DATA_HEADERS, dataVals)
-}
-
-function fillBreadthCells(sheet, breadthData) {
-  const firstField = BREADTH_FIELDS[0]
-  const lastField = BREADTH_FIELDS[BREADTH_FIELDS.length - 1]
+function colorAndFillinBreadthCells(sheet, data) {
+  console.log("Working on BreadthPerAbove")
+  const firstField = FIELDS_BREADTH_PER_ABOVE[0]
+  const lastField =
+    FIELDS_BREADTH_PER_ABOVE[FIELDS_BREADTH_PER_ABOVE.length - 1]
   const startIdx = COLORING_BOOK_SUB_HEADERS.indexOf(firstField)
   const startCol = startIdx + 1
   const endIdx = COLORING_BOOK_SUB_HEADERS.indexOf(lastField)
@@ -26,8 +19,20 @@ function fillBreadthCells(sheet, breadthData) {
   // const endCol = endIdx + 1
   // const lastCol = COLORING_BOOK_SUB_HEADERS.indexOf(lastField) + 1
 
+  const breadthData = getBreadthPerAbove(dataVals, DATA_HEADERS)
   const [header, ...onlyData] = breadthData
 
+  // const breadthDataStats = getBreadthDataStats()
+
+  fillBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols)
+  colorBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols)
+}
+
+function getBreadthPerAbove(dataVals, DATA_HEADERS) {
+  return getDataFromFieldNames(FIELDS_BREADTH_PER_ABOVE, DATA_HEADERS, dataVals)
+}
+
+function fillBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
   const range = sheet.getRange(
     DATA_START_ROW,
     startCol,
@@ -37,27 +42,8 @@ function fillBreadthCells(sheet, breadthData) {
   range.setValues(onlyData)
 }
 
-function colorAndFillinBreadthCells(sheet, data) {
-  const [header, ...breadthData] = getBreadthData(sheet, data)
-  const breadthDataStats = getBreadthDataStats()
-
-  fillBreadthCells(cbSheet, dataVals)
-}
-
-function colorBreadthCells(sheet, breadthData, breadthDataStats) {
-  const [header, ...onlyData] = breadthData
-
-  const firstField = BREADTH_FIELDS[0]
-  const lastField = BREADTH_FIELDS[BREADTH_FIELDS.length - 1]
-  const startIdx = cbSubHeaders.indexOf(firstField)
-  const startCol = startIdx + 1
-  const endIdx = cbSubHeaders.indexOf(lastField)
-  const numCols = endIdx - startIdx + 1
-
-  const breadthBackgroundColors = getBackgroundColorsForBreadth(
-    onlyData,
-    breadthDataStats
-  )
+function colorBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
+  const breadthBackgroundColors = getBackgroundColorsForBreadth(onlyData)
 
   colorRange(
     sheet,
@@ -72,7 +58,7 @@ function colorBreadthCells(sheet, breadthData, breadthDataStats) {
 function getBackgroundColorsForBreadth(breadthData, breadthDataStats) {
   return breadthData.map((arr) =>
     arr.map((val, i) => {
-      const fieldName = BREADTH_FIELDS[i]
+      // const fieldName = BREADTH_FIELDS[i]
       // if (breadthDataStats[fieldName] === undefined)
       //   throw new Error(`No breadth data stats for ${fieldName}`)
 

@@ -1,14 +1,15 @@
 function runFillCellDataTest() {
-  // fillDateCells(cbSheet, dataVals)
-  // INDICES.forEach((indexName) => {
-  //   fillAndColorIndividualIndices(indexName)
-  // })
+  fillAllCells(cbSheet, dataVals)
+}
 
-  colorAndFillinBreadthCells(dataSheet, dataVals)
+function fillAllCells(sheet, data) {
+  fillDateCells(sheet, data)
 
-  const breadthData = getBreadthData(dataSheet, dataVals)
-  const breadthDataStats = getBreadthDataStats()
-  colorBreadthCells(cbSheet, breadthData, breadthDataStats)
+  INDICES.forEach((indexName) => {
+    fillAndColorIndividualIndices(indexName)
+  })
+
+  colorAndFillinBreadthCells(sheet, data)
 }
 
 function fillDateCells(sheet, data) {

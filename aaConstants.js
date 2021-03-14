@@ -92,14 +92,14 @@ const TREND = {
 
 const INDICES = ["COMP", "SPX", "IWM"]
 
-const BREADTH_FIELDS = [
+const FIELDS_INDICES = ["AD", "Per", "L8", "L25", "TrendCnt"]
+const FIELDS_BREADTH_PER_ABOVE = [
   "NAA50R",
-  "NAA150R",
-  "NAA200R",
   "SPXA50R",
+  "NAA150R",
   "SPXA150R",
-  "NASI",
-  "NYMO",
+  "NAA200R",
+  "SPXA200R",
 ]
 
 const INDICES_MERGE_FROM_TO = ["AD", "TrendCnt"]
@@ -128,27 +128,10 @@ const COLORING_BOOK_HEADERS = [
 
 const COLORING_BOOK_SUB_HEADERS = [
   "",
-  "AD",
-  "Per",
-  "L8",
-  "L25",
-  "TrendCnt",
-  "AD",
-  "Per",
-  "L8",
-  "L25",
-  "TrendCnt",
-  "AD",
-  "Per",
-  "L8",
-  "L25",
-  "TrendCnt",
-  "NAA50R",
-  "SPXA50R",
-  "NAA150R",
-  "SPXA150R",
-  "NAA200R",
-  "SPXA200R",
+  ...FIELDS_INDICES,
+  ...FIELDS_INDICES,
+  ...FIELDS_INDICES,
+  ...FIELDS_BREADTH_PER_ABOVE,
   "NASI",
   "NYMO",
   "CPC",
