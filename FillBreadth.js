@@ -4,7 +4,7 @@ function runFillBreadthTest() {
 
   colorAndFillinBreadthCells(cbSheet, dataVals)
   // const breadthDataStats = getBreadthDataStats()
-  // colorBreadthCells(cbSheet, breadthData, breadthDataStats)
+  // colorBreadthPerAbove(cbSheet, breadthData, breadthDataStats)
 }
 
 function colorAndFillinBreadthCells(sheet, data) {
@@ -25,14 +25,13 @@ function colorAndFillinBreadthCells(sheet, data) {
   // const breadthDataStats = getBreadthDataStats()
 
   fillBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols)
-  colorBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols)
+  colorBreadthPerAbove(sheet, onlyData, DATA_START_ROW, startCol, numCols)
 
-  const breadthDataStats = getBreadthPerAboveStats(dataVals)
-
+  const breadthPercAboveDataStats = getBreadthPerAboveStats(dataVals)
   setBreadthPerAboveCellTextStyles(
     sheet,
     onlyData,
-    breadthDataStats,
+    breadthPercAboveDataStats,
     DATA_START_ROW,
     startCol,
     numCols
@@ -96,6 +95,10 @@ function getBreadthPerAbove(dataVals, DATA_HEADERS) {
   return getDataFromFieldNames(FIELDS_BREADTH_PER_ABOVE, DATA_HEADERS, dataVals)
 }
 
+function getBreadthNASI(dataVals, DATA_HEADERS) {
+  return getDataFromFieldNames([FIELDS_BREADTH_NASI], DATA_HEADERS, dataVals)
+}
+
 function fillBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
   const range = sheet.getRange(
     DATA_START_ROW,
@@ -106,8 +109,16 @@ function fillBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
   range.setValues(onlyData)
 }
 
-function colorBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
-  const breadthBackgroundColors = getBackgroundColorsForBreadth(onlyData)
+function colorBreadthPerAbove(
+  sheet,
+  onlyData,
+  DATA_START_ROW,
+  startCol,
+  numCols
+) {
+  const breadthBackgroundColors = getBackgroundColorsForBreadthPerAbove(
+    onlyData
+  )
 
   colorRange(
     sheet,
@@ -119,7 +130,7 @@ function colorBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
   )
 }
 
-function getBackgroundColorsForBreadth(breadthData, breadthDataStats) {
+function getBackgroundColorsForBreadthPerAbove(breadthData, breadthDataStats) {
   return breadthData.map((arr) =>
     arr.map((val, i) => {
       // const fieldName = BREADTH_FIELDS[i]

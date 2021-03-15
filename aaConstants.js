@@ -102,6 +102,8 @@ const FIELDS_BREADTH_PER_ABOVE = [
   "NAA200R",
   "SPXA200R",
 ]
+const FIELDS_BREADTH_NASI = "NASI"
+const FIELDS_BREADTH_NYMO = "NYMO"
 
 const INDICES_MERGE_FROM_TO = ["AD", "TrendCnt"]
 const INDICES_MERGE_LENGTH = 5 // # of Cells from AD to TrendCnt
