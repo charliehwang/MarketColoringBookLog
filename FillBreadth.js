@@ -12,7 +12,8 @@ function colorAndFillinBreadthCells(sheet, data) {
   // const lastCol = COLORING_BOOK_SUB_HEADERS.indexOf(lastField) + 1
 
   // fillAndColorBreadthPerAbove(sheet, data)
-  fillAndColorBreadthNASI(sheet, data)
+  // fillAndColorBreadthNASI(sheet, data)
+  fillAndColorBreadthNYMO(sheet, data)
 }
 
 function setBreadthPerAboveCellTextStyles(
@@ -111,7 +112,7 @@ function fillAndColorBreadthPerAbove(sheet, data) {
   )
 }
 
-function setBreadthNASICellTextStyles(
+function setBreadthCellTextStylesBasedOnStdDevs(
   sheet,
   onlyData,
   breadthDataStats,
@@ -119,7 +120,6 @@ function setBreadthNASICellTextStyles(
   startCol,
   numCols
 ) {
-  console.log("Setting Breadth NASI Text Styles")
   const range = sheet.getRange(
     DATA_START_ROW,
     startCol,
@@ -159,7 +159,8 @@ function setBreadthNASICellTextStyles(
 }
 
 function fillAndColorBreadthNASI(sheet, data) {
-  console.log("Fill Color Breadth NASI")
+  const fieldName = "NASI"
+  console.log("Fill Color Breadth " + fieldName)
   const breadthData = getDataFromFieldNames(
     [FIELDS_BREADTH_NASI],
     DATA_HEADERS,
@@ -180,21 +181,60 @@ function fillAndColorBreadthNASI(sheet, data) {
 
   fillBreadthValues(sheet, onlyData, DATA_START_ROW, startCol, numCols)
 
-  // const breadthBackgroundColors = getBackgroundColorsForNASI(
-  //   onlyData,
-  //   NASIema10
-  // )
-  // colorRange(
-  //   sheet,
-  //   DATA_START_ROW,
-  //   startCol,
-  //   breadthBackgroundColors.length,
-  //   numCols,
-  //   breadthBackgroundColors
-  // )
+  const breadthBackgroundColors = getBackgroundColorsForNASI(
+    onlyData,
+    NASIema10
+  )
+  colorRange(
+    sheet,
+    DATA_START_ROW,
+    startCol,
+    breadthBackgroundColors.length,
+    numCols,
+    breadthBackgroundColors
+  )
 
+  console.log("Setting Breadth Text Styles for " + fieldName)
   const stats = getBreadthStats(FIELDS_BREADTH_NASI, dataVals)
-  setBreadthNASICellTextStyles(
+  setBreadthCellTextStylesBasedOnStdDevs(
+    sheet,
+    onlyData,
+    stats,
+    DATA_START_ROW,
+    startCol,
+    numCols
+  )
+}
+
+function fillAndColorBreadthNYMO(sheet, data) {
+  const fieldName = "NYMO"
+  console.log("Fill Color Breadth " + fieldName)
+  const breadthData = getDataFromFieldNames(
+    [FIELDS_BREADTH_NYMO],
+    DATA_HEADERS,
+    dataVals
+  )
+  const [header, ...onlyData] = breadthData
+
+  const startIdx = COLORING_BOOK_SUB_HEADERS.indexOf(FIELDS_BREADTH_NYMO)
+  const startCol = startIdx + 1
+  const numCols = 1
+
+  fillBreadthValues(sheet, onlyData, DATA_START_ROW, startCol, numCols)
+
+  const breadthBackgroundColors = getBackgroundColorsForNYMO(onlyData)
+  colorRange(
+    sheet,
+    DATA_START_ROW,
+    startCol,
+    breadthBackgroundColors.length,
+    numCols,
+    breadthBackgroundColors
+  )
+
+  console.log("Setting Breadth Text Styles for " + fieldName)
+  const stats = getBreadthStats(FIELDS_BREADTH_NYMO, dataVals)
+  setBreadthCellTextStylesBasedOnStdDevs(
     sheet,
     onlyData,
     stats,
@@ -243,6 +283,28 @@ function getBackgroundColorsForNASI(breadthData, NASIema10) {
         if (val < lastVal) return TREND.SLIGHTLY_BULLISH
         return TREND.BULLISH
       } else if (valNum < ema10) {
+        if (lastVal === undefined) return TREND.BEARISH
+        if (val > lastVal) return TREND.SLIGHTLY_BEARISH
+        return TREND.BEARISH
+      }
+
+      return COLOR_HEX.DARK_GREY
+    })
+  )
+}
+
+function getBackgroundColorsForNYMO(breadthData) {
+  return breadthData.map((arr, i) =>
+    arr.map((val) => {
+      const valNum = Number(val)
+      const lastVal =
+        i !== breadthData.length - 1 ? breadthData[i + 1][0] : undefined
+
+      if (valNum >= 0) {
+        if (lastVal === undefined) return TREND.BULLISH
+        if (val < lastVal) return TREND.SLIGHTLY_BULLISH
+        return TREND.BULLISH
+      } else if (valNum < 0) {
         if (lastVal === undefined) return TREND.BEARISH
         if (val > lastVal) return TREND.SLIGHTLY_BEARISH
         return TREND.BEARISH
