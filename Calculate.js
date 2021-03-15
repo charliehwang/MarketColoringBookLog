@@ -119,11 +119,16 @@ function getBreadthPerAboveStats(dataVals) {
           acc.push(d[fieldIdx])
           return acc
         }, [])
-      const breadtDataForFieldForCurrentDay = calculateColumnDataStats(
-        pastDataForFieldFromCurrentDay
-      )
+      const stats = calculateColumnDataStats(pastDataForFieldFromCurrentDay)
 
-      acc[fieldName].push(breadtDataForFieldForCurrentDay)
+      acc[fieldName].push({
+        average: stats.avg,
+        stdDev: stats.stdDev,
+        posFirstStdDev: stats.avg + stats.stdDev,
+        posSecondStdDev: stats.avg + 2 * stats.stdDev,
+        negFirstStdDev: stats.avg - stats.stdDev,
+        negSecondStdDev: stats.avg - 2 * stats.stdDev,
+      })
     })
 
     return acc
