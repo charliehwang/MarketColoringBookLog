@@ -8,7 +8,6 @@ function runFillBreadthTest() {
 }
 
 function colorAndFillinBreadthCells(sheet, data) {
-  console.log("Working on BreadthPerAbove")
   // const endCol = endIdx + 1
   // const lastCol = COLORING_BOOK_SUB_HEADERS.indexOf(lastField) + 1
 
@@ -24,6 +23,7 @@ function setBreadthPerAboveCellTextStyles(
   startCol,
   numCols
 ) {
+  console.log("Setting BreadthPerAbove Text Styles")
   const range = sheet.getRange(
     DATA_START_ROW,
     startCol,
@@ -70,6 +70,7 @@ function setBreadthPerAboveCellTextStyles(
 }
 
 function fillAndColorBreadthPerAbove(sheet, data) {
+  console.log("Working on BreadthPerAbove")
   const breadthPerAboveData = getDataFromFieldNames(
     FIELDS_BREADTH_PER_ABOVE,
     DATA_HEADERS,
@@ -110,7 +111,55 @@ function fillAndColorBreadthPerAbove(sheet, data) {
   )
 }
 
+function setBreadthNASICellTextStyles(
+  sheet,
+  onlyData,
+  breadthDataStats,
+  DATA_START_ROW,
+  startCol,
+  numCols
+) {
+  console.log("Setting Breadth NASI Text Styles")
+  const range = sheet.getRange(
+    DATA_START_ROW,
+    startCol,
+    onlyData.length,
+    numCols
+  )
+
+  const styles = onlyData.reduce((acc, d, i) => {
+    const val = d[0]
+
+    const [date, ...statsData] = breadthDataStats[i]
+    const {
+      average,
+      stdDev,
+      posFirstStdDev,
+      posSecondStdDev,
+      negFirstStdDev,
+      negSecondStdDev,
+    } = statsData[0]
+
+    let textStyle = TEXT_STYLE_MED_DARK
+    if (val >= posSecondStdDev) {
+      textStyle = TEXT_STYLE_POS_STD_DEV2
+    } else if (val >= posFirstStdDev) {
+      textStyle = TEXT_STYLE_POS_STD_DEV
+    } else if (val <= negSecondStdDev) {
+      textStyle = TEXT_STYLE_NEG_STD_DEV2
+    } else if (val <= negFirstStdDev) {
+      textStyle = TEXT_STYLE_NEG_STD_DEV
+    }
+    acc.push([textStyle])
+
+    return acc
+  }, [])
+
+  range.setTextStyles(styles)
+}
+
 function fillAndColorBreadthNASI(sheet, data) {
+  console.log("Fill Color Breadth NASI")
   const breadthData = getDataFromFieldNames(
     [FIELDS_BREADTH_NASI],
     DATA_HEADERS,
@@ -131,28 +180,28 @@ function fillAndColorBreadthNASI(sheet, data) {
 
   fillBreadthValues(sheet, onlyData, DATA_START_ROW, startCol, numCols)
 
-  const breadthBackgroundColors = getBackgroundColorsForNASI(
-    onlyData,
-    NASIema10
-  )
-  colorRange(
-    sheet,
-    DATA_START_ROW,
-    startCol,
-    breadthBackgroundColors.length,
-    numCols,
-    breadthBackgroundColors
-  )
-
-  // const stats = getBreadthPerAboveStats(dataVals)
-  // setBreadthPerAboveCellTextStyles(
-  //   sheet,
+  // const breadthBackgroundColors = getBackgroundColorsForNASI(
   //   onlyData,
-  //   stats,
+  //   NASIema10
+  // )
+  // colorRange(
+  //   sheet,
   //   DATA_START_ROW,
   //   startCol,
-  //   numCols
+  //   breadthBackgroundColors.length,
+  //   numCols,
+  //   breadthBackgroundColors
   // )
+
+  const stats = getBreadthStats(FIELDS_BREADTH_NASI, dataVals)
+  setBreadthNASICellTextStyles(
+    sheet,
+    onlyData,
+    stats,
+    DATA_START_ROW,
+    startCol,
+    numCols
+  )
 }
 
 function fillBreadthValues(sheet, onlyData, DATA_START_ROW, startCol, numCols) {

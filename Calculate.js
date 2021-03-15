@@ -134,3 +134,52 @@ function getBreadthPerAboveStats(dataVals) {
     return acc
   }, {})
 }
+
+//
+// [
+//     [date,  {
+//                       average: ....,
+//                       stdDev: ....,
+//                       posFirstStdDev: ....,
+//                       ....,
+//             }]
+// ]
+//
+function getBreadthStats(fieldName, dataVals) {
+  // return FIELDS_BREADTH_PER_ABOVE.reduce((acc, fieldName) => {
+  const fields = [FIELD_DATE, fieldName]
+  const [headers, ...onlyData] = getDataFromFieldNames(
+    fields,
+    DATA_HEADERS,
+    dataVals
+  )
+  const dateFieldIdx = fields.indexOf(FIELD_DATE)
+  const dataIdx = 1
+
+  return onlyData.reduce((acc, data, i) => {
+    // this data should only be for one column
+    const pastDataForFieldFromCurrentDay = onlyData
+      .slice(i)
+      .reduce((acc, d) => {
+        acc.push(d[dataIdx])
+        return acc
+      }, [])
+    const stats = calculateColumnDataStats(pastDataForFieldFromCurrentDay)
+
+    const date = data[dateFieldIdx]
+
+    acc.push([
+      date,
+      {
+        average: stats.avg,
+        stdDev: stats.stdDev,
+        posFirstStdDev: stats.avg + stats.stdDev,
+        posSecondStdDev: stats.avg + 2 * stats.stdDev,
+        negFirstStdDev: stats.avg - stats.stdDev,
+        negSecondStdDev: stats.avg - 2 * stats.stdDev,
+      },
+    ])
+
+    return acc
+  }, [])
+}
