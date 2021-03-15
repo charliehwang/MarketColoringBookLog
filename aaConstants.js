@@ -149,6 +149,11 @@ const SUB_HEADERS_ROW_NUM = 2
 const DATA_START_ROW = SUB_HEADERS_ROW_NUM + 1
 const DATE_COL = 1
 
+const BREADTH_PER_ABOVE_EXTREME_BULLISHNESS = 80
+const BREADTH_PER_ABOVE_BULLISHNESS = 70
+const BREADTH_PER_ABOVE_BEARISHNESS = 30
+const BREADTH_PER_ABOVE_EXTREME_BEARISHNESS = 20
+
 const LARGE_DISTRIBUTION_DAY_LETTER = "D"
 const SMALL_DISTRIBUTION_DAY_LETTER = "d"
 const LARGE_ACCUMULATION_DAY_LETTER = "A"
@@ -163,23 +168,27 @@ const TEXT_STYLE_MED_DARK = SpreadsheetApp.newTextStyle()
   .setForegroundColor(COLOR_HEX.WHITE50)
   .build()
 
-const TEXT_STYLE_SMALL_ACCUMULATION_DAY = SpreadsheetApp.newTextStyle()
+const TEXT_STYLE_POS_STD_DEV = SpreadsheetApp.newTextStyle()
   .setBold(true)
   .setForegroundColor(COLOR_HEX.LIGHT_GREEN30)
   .build()
-const TEXT_STYLE_LARGE_ACCUMULATION_DAY = SpreadsheetApp.newTextStyle()
+const TEXT_STYLE_POS_STD_DEV2 = SpreadsheetApp.newTextStyle()
   .setBold(true)
   .setForegroundColor(COLOR_HEX.GREEN)
   .build()
+const TEXT_STYLE_SMALL_ACCUMULATION_DAY = TEXT_STYLE_POS_STD_DEV
+const TEXT_STYLE_LARGE_ACCUMULATION_DAY = TEXT_STYLE_POS_STD_DEV2
 
-const TEXT_STYLE_SMALL_DISTRIBUTION_DAY = SpreadsheetApp.newTextStyle()
+const TEXT_STYLE_NEG_STD_DEV = SpreadsheetApp.newTextStyle()
   .setBold(true)
   .setForegroundColor(COLOR_HEX.LIGHT_RED30)
   .build()
-const TEXT_STYLE_LARGE_DISTRIBUTION_DAY = SpreadsheetApp.newTextStyle()
+const TEXT_STYLE_NEG_STD_DEV2 = SpreadsheetApp.newTextStyle()
   .setBold(true)
   .setForegroundColor(COLOR_HEX.RED)
   .build()
+const TEXT_STYLE_SMALL_DISTRIBUTION_DAY = TEXT_STYLE_NEG_STD_DEV
+const TEXT_STYLE_LARGE_DISTRIBUTION_DAY = TEXT_STYLE_NEG_STD_DEV2
 
 const TEXT_STYLE_PERC_UP = SpreadsheetApp.newTextStyle()
   .setBold(true)

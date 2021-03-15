@@ -26,6 +26,70 @@ function colorAndFillinBreadthCells(sheet, data) {
 
   fillBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols)
   colorBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols)
+
+  const breadthDataStats = getBreadthPerAboveStats(dataVals)
+
+  setBreadthPerAboveCellTextStyles(
+    sheet,
+    onlyData,
+    breadthDataStats,
+    DATA_START_ROW,
+    startCol,
+    numCols
+  )
+}
+
+function setBreadthPerAboveCellTextStyles(
+  sheet,
+  onlyData,
+  breadthDataStats,
+  DATA_START_ROW,
+  startCol,
+  numCols
+) {
+  const range = sheet.getRange(
+    DATA_START_ROW,
+    startCol,
+    onlyData.length,
+    numCols
+  )
+
+  const styles = FIELDS_BREADTH_PER_ABOVE.reduce((acc, fieldName, i) => {
+    const statsData = breadthDataStats[fieldName]
+    const fieldIdx = FIELDS_BREADTH_PER_ABOVE.indexOf(fieldName)
+
+    const stylesForFieldName = onlyData.map((d, j) => {
+      const {
+        average,
+        stdDev,
+        posFirstStdDev,
+        posSecondStdDev,
+        negFirstStdDev,
+        negSecondStdDev,
+      } = statsData[j]
+
+      const fieldVal = +d[fieldIdx]
+
+      let textStyle = TEXT_STYLE_MED_DARK
+      if (fieldVal >= BREADTH_PER_ABOVE_EXTREME_BULLISHNESS) {
+        textStyle = TEXT_STYLE_POS_STD_DEV2
+      } else if (fieldVal >= BREADTH_PER_ABOVE_BULLISHNESS) {
+        textStyle = TEXT_STYLE_POS_STD_DEV
+      } else if (fieldVal <= BREADTH_PER_ABOVE_EXTREME_BEARISHNESS) {
+        textStyle = TEXT_STYLE_NEG_STD_DEV2
+      } else if (fieldVal <= BREADTH_PER_ABOVE_BEARISHNESS) {
+        textStyle = TEXT_STYLE_NEG_STD_DEV
+      }
+
+      acc[j] = acc[j] === undefined ? [] : acc[j]
+      acc[j].push(textStyle)
+    })
+
+    return acc
+  }, [])
+
+  console.log("Setting BreadthPerAbove TextStyles")
+  range.setTextStyles(styles)
 }
 
 function getBreadthPerAbove(dataVals, DATA_HEADERS) {
