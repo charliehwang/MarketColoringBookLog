@@ -12,8 +12,8 @@ function colorAndFillinBreadthCells(sheet, data) {
   // const endCol = endIdx + 1
   // const lastCol = COLORING_BOOK_SUB_HEADERS.indexOf(lastField) + 1
 
-  fillAndColorBreadthPerAbove(sheet, data)
-  // fillAndColorBreadthNASI(sheet, data)
+  // fillAndColorBreadthPerAbove(sheet, data)
+  fillAndColorBreadthNASI(sheet, data)
 }
 
 function setBreadthPerAboveCellTextStyles(
@@ -68,11 +68,13 @@ function setBreadthPerAboveCellTextStyles(
   console.log("Setting BreadthPerAbove TextStyles")
   range.setTextStyles(styles)
 }
-// const startIdx = COLORING_BOOK_SUB_HEADERS.indexOf(FIELDS_BREADTH_NASI)
-// const numCols = 1
 
 function fillAndColorBreadthPerAbove(sheet, data) {
-  const breadthPerAboveData = getBreadthPerAbove(dataVals, DATA_HEADERS)
+  const breadthPerAboveData = getDataFromFieldNames(
+    FIELDS_BREADTH_PER_ABOVE,
+    DATA_HEADERS,
+    dataVals
+  )
   const [header, ...onlyData] = breadthPerAboveData
 
   const firstField = FIELDS_BREADTH_PER_ABOVE[0]
@@ -108,12 +110,49 @@ function fillAndColorBreadthPerAbove(sheet, data) {
   )
 }
 
-function getBreadthPerAbove(dataVals, DATA_HEADERS) {
-  return getDataFromFieldNames(FIELDS_BREADTH_PER_ABOVE, DATA_HEADERS, dataVals)
-}
+function fillAndColorBreadthNASI(sheet, data) {
+  const breadthData = getDataFromFieldNames(
+    [FIELDS_BREADTH_NASI],
+    DATA_HEADERS,
+    dataVals
+  )
+  const [header, ...onlyData] = breadthData
 
-function getBreadthNASI(dataVals, DATA_HEADERS) {
-  return getDataFromFieldNames([FIELDS_BREADTH_NASI], DATA_HEADERS, dataVals)
+  const NASIema10Data = getDataFromFieldNames(
+    [FIELDS_BREADTH_NASI + "_EMA10"],
+    DATA_HEADERS,
+    dataVals
+  )
+  const [, ...NASIema10] = NASIema10Data
+
+  const startIdx = COLORING_BOOK_SUB_HEADERS.indexOf(FIELDS_BREADTH_NASI)
+  const startCol = startIdx + 1
+  const numCols = 1
+
+  fillBreadthValues(sheet, onlyData, DATA_START_ROW, startCol, numCols)
+
+  const breadthBackgroundColors = getBackgroundColorsForNASI(
+    onlyData,
+    NASIema10
+  )
+  colorRange(
+    sheet,
+    DATA_START_ROW,
+    startCol,
+    breadthBackgroundColors.length,
+    numCols,
+    breadthBackgroundColors
+  )
+
+  // const stats = getBreadthPerAboveStats(dataVals)
+  // setBreadthPerAboveCellTextStyles(
+  //   sheet,
+  //   onlyData,
+  //   stats,
+  //   DATA_START_ROW,
+  //   startCol,
+  //   numCols
+  // )
 }
 
 function fillBreadthValues(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
@@ -124,19 +163,6 @@ function fillBreadthValues(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
     numCols
   )
   range.setValues(onlyData)
-}
-
-function colorBreadthNASI(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
-  const breadthBackgroundColors = getBackgroundColorsForNASI(onlyData)
-
-  colorRange(
-    sheet,
-    DATA_START_ROW,
-    startCol,
-    breadthBackgroundColors.length,
-    numCols,
-    breadthBackgroundColors
-  )
 }
 
 function getBackgroundColorsForBreadthPerAbove(breadthData) {
@@ -155,14 +181,21 @@ function getBackgroundColorsForBreadthPerAbove(breadthData) {
   )
 }
 
-function getBackgroundColorsForNASI(breadthData) {
-  return breadthData.map((arr) =>
-    arr.map((val, i) => {
+function getBackgroundColorsForNASI(breadthData, NASIema10) {
+  return breadthData.map((arr, i) =>
+    arr.map((val) => {
       const valNum = Number(val)
+      const lastVal =
+        i !== breadthData.length - 1 ? breadthData[i + 1][0] : undefined
+      const ema10 = NASIema10[i][0] // only one data in the array
 
-      if (valNum >= 0) {
+      if (valNum >= ema10) {
+        if (lastVal === undefined) return TREND.BULLISH
+        if (val < lastVal) return TREND.SLIGHTLY_BULLISH
         return TREND.BULLISH
-      } else if (valNum < 0) {
+      } else if (valNum < ema10) {
+        if (lastVal === undefined) return TREND.BEARISH
+        if (val > lastVal) return TREND.SLIGHTLY_BEARISH
         return TREND.BEARISH
       }
 
