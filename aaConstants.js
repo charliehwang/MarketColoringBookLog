@@ -92,6 +92,7 @@ const TREND = {
 
 const INDICES = ["COMP", "SPX", "IWM"]
 
+const FIELD_DATE = "DATE"
 const FIELDS_INDICES = ["AD", "Per", "L8", "L25", "TrendCnt"]
 const FIELDS_BREADTH_PER_ABOVE = [
   "NAA50R",

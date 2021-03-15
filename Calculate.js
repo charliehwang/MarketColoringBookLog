@@ -8,7 +8,9 @@ function runCalculateTest() {
   // Logger.log(getDataIDX("NAA50R"))
   // Logger.log(getDataIDX("COMP20ema"))
 
-  calculateIndividualIndiceColoringBookData("COMP", dataVals)
+  // calculateIndividualIndiceColoringBookData("COMP", dataVals)
+  const data = getBreadthPerAboveStats(dataVals)
+  console.log("received breadth stats")
 }
 
 function calculateIndividualIndiceColoringBookData(indexName, dataVals) {
@@ -84,8 +86,68 @@ function calculateIndexData(indexName, headerIdxLocations, dataVals) {
   return { calculatedData, calculatedColors }
 }
 
+//
+// { "NAA50R" : [
+//     [date, stats : {
+//                       average: ....,
+//                       stdDev: ....,
+//                       posFirstStdDev: ....,
+//                       ....,
+//                    }]
+// ]}
+//
+function getBreadthPerAboveStats(dataVals) {
+  // return FIELDS_BREADTH_PER_ABOVE.reduce((acc, fieldName) => {
+  const fields = [FIELD_DATE, ...FIELDS_BREADTH_PER_ABOVE]
+  const [headers, ...onlyData] = getDataFromFieldNames(
+    fields,
+    DATA_HEADERS,
+    dataVals
+  )
+  const dateFieldIdx = fields.indexOf(FIELD_DATE)
+
+  console.log("stats received")
+  return FIELDS_BREADTH_PER_ABOVE.reduce((acc, fieldName) => {
+    acc[fieldName] = acc[fieldName] || []
+    const fieldIdx = fields.indexOf(fieldName)
+
+    onlyData.forEach((od, i) => {
+      // this data should only be for one column
+      const pastDataForFieldFromCurrentDay = onlyData
+        .slice(i)
+        .reduce((acc, d) => {
+          acc.push(d[fieldIdx])
+          return acc
+        }, [])
+      const breadtDataForFieldForCurrentDay = calculateColumnDataStats(
+        pastDataForFieldFromCurrentDay
+      )
+
+      acc[fieldName].push(breadtDataForFieldForCurrentDay)
+    })
+
+    return acc
+  }, {})
+  // return [FIELD_DATE, ...FIELDS_BREADTH_PER_ABOVE].reduce((acc, fieldName) => {
+  //   const colData = getColDataFor(fieldName, dataVals)
+  //   const stats = calculateColumnDataStats(colData)
+  //   acc[fieldName] = acc[fieldName] ? acc[fieldName] : {}
+
+  //   acc[fieldName] = {
+  //     average: stats.avg,
+  //     stdDev: stats.stdDev,
+  //     posFirstStdDev: stats.avg + stats.stdDev,
+  //     posSecondStdDev: stats.avg + 2 * stats.stdDev,
+  //     negFirstStdDev: stats.avg - stats.stdDev,
+  //     negSecondStdDev: stats.avg - 2 * stats.stdDev,
+  //   }
+
+  //   return acc
+  // }, {})
+}
+
 function getBreadthDataStats() {
-  return BREADTH_FIELDS.reduce((acc, fieldName) => {
+  return [FIELD_DATE, ...FIELDS_BREADTH_PER_ABOVE].reduce((acc, fieldName) => {
     const colData = getColDataFor(fieldName, dataVals)
     const stats = calculateColumnDataStats(colData)
     acc[fieldName] = acc[fieldName] ? acc[fieldName] : {}

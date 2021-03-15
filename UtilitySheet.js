@@ -6,6 +6,8 @@ function runTestUtilitySheet() {
   // )
   // console.log(headerIdxLocations)
   // getColDataFor("NAA50R", dataVals)
+  const test = getDataFromFieldNames(["DATE"], DATA_HEADERS, dataVals)
+  console.log(test)
 }
 
 function getDataColNum(fieldName) {
@@ -95,10 +97,9 @@ function average(data) {
   return avg
 }
 
-function calculateColumnDataStats(data) {
-  const [header, ...onlyData] = removeDateData(data).map((d) => d[0])
-  const avg = average(onlyData)
-  const stdDev = standardDeviation(onlyData)
+function calculateColumnDataStats(onlyOneColumnData) {
+  const avg = average(onlyOneColumnData)
+  const stdDev = standardDeviation(onlyOneColumnData)
   return { avg, stdDev }
 }
 
@@ -108,11 +109,11 @@ function colorRange(sheet, startRow, startCol, numRows, numCols, colorsArr) {
 }
 
 function getDataFromFieldNames(fieldNames, dataHeaders, dataVals) {
-  const firstField = fieldNames[0]
-  const lastField = fieldNames[fieldNames.length - 1]
-  const startIdx = dataHeaders.indexOf(firstField)
-  const startCol = startIdx + 1
-  const endIdx = dataHeaders.indexOf(lastField)
+  // const firstField = fieldNames[0]
+  // const lastField = fieldNames[fieldNames.length - 1]
+  // const startIdx = dataHeaders.indexOf(firstField)
+  // const startCol = startIdx + 1
+  // const endIdx = dataHeaders.indexOf(lastField)
 
   const breadthFieldIdxs = dataHeaders.reduce((acc, headerName, i) => {
     if (fieldNames.indexOf(headerName) >= 0) acc.push(i)
