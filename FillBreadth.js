@@ -19,18 +19,31 @@ function colorAndFillinBreadthCells(sheet, data) {
   // const endCol = endIdx + 1
   // const lastCol = COLORING_BOOK_SUB_HEADERS.indexOf(lastField) + 1
 
-  const breadthData = getBreadthPerAbove(dataVals, DATA_HEADERS)
-  const [header, ...onlyData] = breadthData
+  //-------------------------
+  // Breadth Per Above
+  //-------------------------
+  const breadthPerAboveData = getBreadthPerAbove(dataVals, DATA_HEADERS)
+  const [header, ...onlyBreadthPerAboveData] = breadthPerAboveData
 
-  // const breadthDataStats = getBreadthDataStats()
-
-  fillBreadthPerAbove(sheet, onlyData, DATA_START_ROW, startCol, numCols)
-  colorBreadthPerAbove(sheet, onlyData, DATA_START_ROW, startCol, numCols)
+  fillBreadthPerAbove(
+    sheet,
+    onlyBreadthPerAboveData,
+    DATA_START_ROW,
+    startCol,
+    numCols
+  )
+  colorBreadthPerAbove(
+    sheet,
+    onlyBreadthPerAboveData,
+    DATA_START_ROW,
+    startCol,
+    numCols
+  )
 
   const breadthPercAboveDataStats = getBreadthPerAboveStats(dataVals)
   setBreadthPerAboveCellTextStyles(
     sheet,
-    onlyData,
+    onlyBreadthPerAboveData,
     breadthPercAboveDataStats,
     DATA_START_ROW,
     startCol,
