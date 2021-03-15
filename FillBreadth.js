@@ -24,7 +24,7 @@ function colorAndFillinBreadthCells(sheet, data) {
 
   // const breadthDataStats = getBreadthDataStats()
 
-  fillBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols)
+  fillBreadthPerAbove(sheet, onlyData, DATA_START_ROW, startCol, numCols)
   colorBreadthPerAbove(sheet, onlyData, DATA_START_ROW, startCol, numCols)
 
   const breadthPercAboveDataStats = getBreadthPerAboveStats(dataVals)
@@ -99,7 +99,13 @@ function getBreadthNASI(dataVals, DATA_HEADERS) {
   return getDataFromFieldNames([FIELDS_BREADTH_NASI], DATA_HEADERS, dataVals)
 }
 
-function fillBreadthCells(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
+function fillBreadthPerAbove(
+  sheet,
+  onlyData,
+  DATA_START_ROW,
+  startCol,
+  numCols
+) {
   const range = sheet.getRange(
     DATA_START_ROW,
     startCol,
