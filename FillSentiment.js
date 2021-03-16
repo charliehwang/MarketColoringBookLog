@@ -1,5 +1,11 @@
 function runFillSentimentTest() {
-  colorAndFillinSentimentCells(cbSheet, dataVals, DATA_START_ROW)
+  const fieldName = "VIX_HIGH"
+  const startCol = getStartColFor(fieldName)
+  const [header, ...dataForField] = getDataFromFieldNames([fieldName], DATA_HEADERS, dataVals)
+  const stats = getStats(fieldName, dataVals)
+
+  // colorAndFillinSentimentCells(cbSheet, dataVals, DATA_START_ROW)
+  console.log("done")
 }
 
 function colorAndFillinSentimentCells(sheet, data) {

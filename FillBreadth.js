@@ -14,7 +14,7 @@ function colorAndFillinBreadthCells(sheet, data) {
 }
 
 function setBreadthPerAboveCellTextStyles(sheet, onlyData, breadthDataStats, DATA_START_ROW, startCol, numCols) {
-  console.log("Setting BreadthPerAbove Text Styles")
+  console.log("Setting Breadth PerAbove Text Styles")
   const range = sheet.getRange(DATA_START_ROW, startCol, onlyData.length, numCols)
 
   const styles = FIELDS_BREADTH_PER_ABOVE.reduce((acc, fieldName, i) => {
@@ -44,7 +44,6 @@ function setBreadthPerAboveCellTextStyles(sheet, onlyData, breadthDataStats, DAT
     return acc
   }, [])
 
-  console.log("Setting BreadthPerAbove TextStyles")
   range.setTextStyles(styles)
 }
 

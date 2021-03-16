@@ -84,7 +84,6 @@ function getBreadthPerAboveStats(dataVals) {
   const [headers, ...onlyData] = getDataFromFieldNames(fields, DATA_HEADERS, dataVals)
   const dateFieldIdx = fields.indexOf(FIELD_DATE)
 
-  console.log("stats received")
   return FIELDS_BREADTH_PER_ABOVE.reduce((acc, fieldName) => {
     acc[fieldName] = acc[fieldName] || []
     const fieldIdx = fields.indexOf(fieldName)

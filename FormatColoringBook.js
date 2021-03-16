@@ -8,12 +8,7 @@ function setupColoringBook() {
 
   setColoringBookColumnWidths()
   // set everything to dark mode
-  const allRange = cbSheet.getRange(
-    HEADERS_ROW_NUM,
-    DATE_COL,
-    numOfRows,
-    numOfColumns
-  )
+  const allRange = cbSheet.getRange(HEADERS_ROW_NUM, DATE_COL, numOfRows, numOfColumns)
   allRange.setBackground(COLOR_HEX.DARK_GREY)
   allRange.setTextStyle(TEXT_STYLE_NORMAL)
 
@@ -22,12 +17,8 @@ function setupColoringBook() {
   //
   // setup the first header row
   //
-  const mergeCellColsData = getMergeCellColsData(
-    COLORING_BOOK_SUB_HEADERS,
-    INDICES_MERGE_FROM_TO
-  )
-  if (COLORING_BOOK_HEADERS.length !== mergeCellColsData.length)
-    throw new Error("Main header lengths should match.")
+  const mergeCellColsData = getMergeCellColsData(COLORING_BOOK_SUB_HEADERS, INDICES_MERGE_FROM_TO)
+  if (COLORING_BOOK_HEADERS.length !== mergeCellColsData.length) throw new Error("Main header lengths should match.")
 
   console.log(mergeCellColsData)
   mergeCellColsData.forEach((d) => {
@@ -41,10 +32,7 @@ function setupColoringBook() {
   })
 
   // set styles
-  var headerStyle = SpreadsheetApp.newTextStyle()
-    .setBold(true)
-    .setForegroundColor("#E6E6E6")
-    .build()
+  var headerStyle = SpreadsheetApp.newTextStyle().setBold(true).setForegroundColor("#E6E6E6").build()
 
   const headerRange = cbSheet.getRange(HEADERS_ROW_NUM, 1, 1, numOfColumns)
   headerRange.setBackgroundRGB(...COLOR.DARK_GREY)
@@ -64,19 +52,11 @@ function setupColoringBook() {
   })
 
   console.log(COLORING_BOOK_SUB_HEADERS.length)
-  const subHeaderRange = cbSheet.getRange(
-    SUB_HEADERS_ROW_NUM,
-    1,
-    1,
-    COLORING_BOOK_SUB_HEADERS.length
-  )
+  const subHeaderRange = cbSheet.getRange(SUB_HEADERS_ROW_NUM, 1, 1, COLORING_BOOK_SUB_HEADERS.length)
   subHeaderRange.setValues([COLORING_BOOK_SUB_HEADERS])
 
   // set styles
-  var subHeaderStyle = SpreadsheetApp.newTextStyle()
-    .setBold(true)
-    .setForegroundColor("#CDCDCD")
-    .build()
+  var subHeaderStyle = SpreadsheetApp.newTextStyle().setBold(true).setForegroundColor("#CDCDCD").build()
 
   subHeaderRange.setBackgroundRGB(...COLOR.GREY)
   subHeaderRange.setTextStyle(subHeaderStyle)
@@ -98,9 +78,9 @@ function setColoringBookColumnWidths() {
   cbSheet.setColumnWidths(12, 5, INDEX_WIDTH)
   cbSheet.setColumnWidths(13, 1, WIDER_WIDTH) // IWM PER
   cbSheet.setColumnWidths(17, 8, WIDTH)
-  cbSheet.setColumnWidths(25, 6, WIDTH)
-  cbSheet.setColumnWidths(31, 1, 500)
-  cbSheet.setColumnWidths(32, 1, 800)
+  cbSheet.setColumnWidths(25, 8, WIDTH)
+  cbSheet.setColumnWidths(33, 1, 500)
+  cbSheet.setColumnWidths(34, 1, 1000)
 }
 
 function getMergeCellColsData(subHeaders, INDICES_MERGE_FROM_TO) {
@@ -131,13 +111,9 @@ function getMergeCellColsData(subHeaders, INDICES_MERGE_FROM_TO) {
     // console.log(secondColNameInstancesFound)
 
     const firstColNum =
-      firstColNameInstancesFound.length > 1
-        ? firstColNameInstancesFound[dupeCount]
-        : firstColNameInstancesFound[0]
+      firstColNameInstancesFound.length > 1 ? firstColNameInstancesFound[dupeCount] : firstColNameInstancesFound[0]
     const secondColNum =
-      secondColNameInstancesFound.length > 1
-        ? secondColNameInstancesFound[dupeCount]
-        : secondColNameInstancesFound[0]
+      secondColNameInstancesFound.length > 1 ? secondColNameInstancesFound[dupeCount] : secondColNameInstancesFound[0]
 
     firstColNameInstancesFound.length > 1 && dupeCount++
 

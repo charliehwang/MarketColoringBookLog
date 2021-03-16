@@ -10,6 +10,8 @@ function fillAllCells(sheet, data) {
   })
 
   colorAndFillinBreadthCells(sheet, data)
+
+  colorAndFillinSentimentCells(cbSheet, dataVals, DATA_START_ROW)
 }
 
 function fillDateCells(sheet, data) {

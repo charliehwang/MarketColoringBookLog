@@ -6,17 +6,14 @@ const dataLastRow = dataSheet.getLastRow()
 const dataHeaderRange = dataSheet.getRange(1, 1, 1, dataLastCol)
 const dataHeaderVals = dataHeaderRange.getValues()
 const DATA_HEADERS = dataHeaderVals ? dataHeaderVals[0] : undefined
-if (DATA_HEADERS === undefined)
-  throw new Error("There are no headers in the Data sheet")
+if (DATA_HEADERS === undefined) throw new Error("There are no headers in the Data sheet")
 
 const dataRange = dataSheet.getRange(1, 1, dataLastRow, dataLastCol)
 const dataVals = dataRange.getValues()
 
 const cbLastCol = cbSheet.getLastColumn()
-const cbHeaders =
-  cbLastCol && cbSheet.getRange(1, 1, 1, cbLastCol).getValues()[0]
-const cbSubHeaders =
-  cbLastCol && cbSheet.getRange(2, 1, 1, cbLastCol).getValues()[0]
+const cbHeaders = cbLastCol && cbSheet.getRange(1, 1, 1, cbLastCol).getValues()[0]
+const cbSubHeaders = cbLastCol && cbSheet.getRange(2, 1, 1, cbLastCol).getValues()[0]
 
 const COLOR_HEX = {
   WHITE: "#FFF",
@@ -94,25 +91,11 @@ const INDICES = ["COMP", "SPX", "IWM"]
 
 const FIELD_DATE = "DATE"
 const FIELDS_INDICES = ["AD", "Per", "L8", "L25", "TrendCnt"]
-const FIELDS_BREADTH_PER_ABOVE = [
-  "NAA50R",
-  "SPXA50R",
-  "NAA150R",
-  "SPXA150R",
-  "NAA200R",
-  "SPXA200R",
-]
+const FIELDS_BREADTH_PER_ABOVE = ["NAA50R", "SPXA50R", "NAA150R", "SPXA150R", "NAA200R", "SPXA200R"]
 const FIELDS_BREADTH_NASI = "NASI"
 const FIELDS_BREADTH_NYMO = "NYMO"
 
-const FIELDS_SENTIMENT = [
-  "CPC",
-  "VIX",
-  "NAAIM",
-  "AAII",
-  "BULL_AAII",
-  "BEAR_AAII",
-]
+const FIELDS_SENTIMENT = ["CPC", "VIX", "VIX_HIGH", "VIX_LOW", "NAAIM", "AAII", "BULL_AAII", "BEAR_AAII"]
 
 const INDICES_MERGE_FROM_TO = ["AD", "TrendCnt"]
 const INDICES_MERGE_LENGTH = 5 // # of Cells from AD to TrendCnt
@@ -127,16 +110,7 @@ const MERGE_CELLS_FROM_TO = [
   ["Notes"],
 ]
 
-const COLORING_BOOK_HEADERS = [
-  "Date",
-  "COMP",
-  "SPX",
-  "IWM",
-  "Breadth",
-  "Sentiment",
-  "Notes",
-  "",
-]
+const COLORING_BOOK_HEADERS = ["Date", "COMP", "SPX", "IWM", "Breadth", "Sentiment", "Notes", ""]
 
 const COLORING_BOOK_SUB_HEADERS = [
   "",
@@ -165,23 +139,14 @@ const SMALL_DISTRIBUTION_DAY_LETTER = "d"
 const LARGE_ACCUMULATION_DAY_LETTER = "A"
 const SMALL_ACCUMULATION_DAY_LETTER = "a"
 
-const TEXT_STYLE_NORMAL = SpreadsheetApp.newTextStyle()
-  .setBold(false)
-  .setForegroundColor(COLOR_HEX.WHITE70)
-  .build()
-const TEXT_STYLE_MED_DARK = SpreadsheetApp.newTextStyle()
-  .setBold(false)
-  .setForegroundColor(COLOR_HEX.WHITE50)
-  .build()
+const TEXT_STYLE_NORMAL = SpreadsheetApp.newTextStyle().setBold(false).setForegroundColor(COLOR_HEX.WHITE70).build()
+const TEXT_STYLE_MED_DARK = SpreadsheetApp.newTextStyle().setBold(false).setForegroundColor(COLOR_HEX.WHITE50).build()
 
 const TEXT_STYLE_POS_STD_DEV = SpreadsheetApp.newTextStyle()
   .setBold(true)
   .setForegroundColor(COLOR_HEX.LIGHT_GREEN30)
   .build()
-const TEXT_STYLE_POS_STD_DEV2 = SpreadsheetApp.newTextStyle()
-  .setBold(true)
-  .setForegroundColor(COLOR_HEX.GREEN)
-  .build()
+const TEXT_STYLE_POS_STD_DEV2 = SpreadsheetApp.newTextStyle().setBold(true).setForegroundColor(COLOR_HEX.GREEN).build()
 const TEXT_STYLE_SMALL_ACCUMULATION_DAY = TEXT_STYLE_POS_STD_DEV
 const TEXT_STYLE_LARGE_ACCUMULATION_DAY = TEXT_STYLE_POS_STD_DEV2
 
@@ -189,20 +154,11 @@ const TEXT_STYLE_NEG_STD_DEV = SpreadsheetApp.newTextStyle()
   .setBold(true)
   .setForegroundColor(COLOR_HEX.LIGHT_RED30)
   .build()
-const TEXT_STYLE_NEG_STD_DEV2 = SpreadsheetApp.newTextStyle()
-  .setBold(true)
-  .setForegroundColor(COLOR_HEX.RED)
-  .build()
+const TEXT_STYLE_NEG_STD_DEV2 = SpreadsheetApp.newTextStyle().setBold(true).setForegroundColor(COLOR_HEX.RED).build()
 const TEXT_STYLE_SMALL_DISTRIBUTION_DAY = TEXT_STYLE_NEG_STD_DEV
 const TEXT_STYLE_LARGE_DISTRIBUTION_DAY = TEXT_STYLE_NEG_STD_DEV2
 
-const TEXT_STYLE_PERC_UP = SpreadsheetApp.newTextStyle()
-  .setBold(true)
-  .setForegroundColor(COLOR_HEX.GREEN)
-  .build()
-const TEXT_STYLE_PERC_DN = SpreadsheetApp.newTextStyle()
-  .setBold(true)
-  .setForegroundColor(COLOR_HEX.RED)
-  .build()
+const TEXT_STYLE_PERC_UP = SpreadsheetApp.newTextStyle().setBold(true).setForegroundColor(COLOR_HEX.GREEN).build()
+const TEXT_STYLE_PERC_DN = SpreadsheetApp.newTextStyle().setBold(true).setForegroundColor(COLOR_HEX.RED).build()
 
 const BREADTH_PERC_ABOVE_MIDLINE = 50
