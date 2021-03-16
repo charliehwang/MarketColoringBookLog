@@ -1,4 +1,8 @@
 function runFillCellDataTest() {
+  console.log("test")
+}
+
+function colorAll() {
   fillAllCells(cbSheet, dataVals)
 }
 

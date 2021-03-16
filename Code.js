@@ -8,16 +8,16 @@ function runMeTest() {
   // Logger.log(getDataIDX("COMP20ema"))
 }
 
-function onEdit(e) {
-  console.log("onEdit")
-  const sheet = e.range.getSheet()
-  console.log(e.range.getSheet().getSheetName())
-  if (e.range.getSheet().getSheetName() == "Coloring Book") {
-    fillIndices(cbSheet, dataSheet, 10) // color last 10 rows
-  }
+// function onEdit(e) {
+//   console.log("onEdit")
+//   const sheet = e.range.getSheet()
+//   console.log(e.range.getSheet().getSheetName())
+//   if (e.range.getSheet().getSheetName() == "Coloring Book") {
+//     fillIndices(cbSheet, dataSheet, 10) // color last 10 rows
+//   }
 
-  return
-}
+//   return
+// }
 
 function fillIndices(cbSheet, dataSheet, numberOfRows) {
   const cbLastRow = cbSheet.getLastRow()
