@@ -144,3 +144,9 @@ function fillCellValues(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
   )
   range.setValues(onlyData)
 }
+
+function getStartColFor(fieldName) {
+  const startIdx = COLORING_BOOK_SUB_HEADERS.indexOf(firstField)
+  if (startIdx === -1) return undefined
+  return startIdx + 1
+}
