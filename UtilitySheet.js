@@ -134,3 +134,13 @@ function filterDataWithFromIndexes(wantedFieldIdxs, data) {
     return filtered
   })
 }
+
+function fillCellValues(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
+  const range = sheet.getRange(
+    DATA_START_ROW,
+    startCol,
+    onlyData.length,
+    numCols
+  )
+  range.setValues(onlyData)
+}

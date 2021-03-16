@@ -8,11 +8,8 @@ function runFillBreadthTest() {
 }
 
 function colorAndFillinBreadthCells(sheet, data) {
-  // const endCol = endIdx + 1
-  // const lastCol = COLORING_BOOK_SUB_HEADERS.indexOf(lastField) + 1
-
-  // fillAndColorBreadthPerAbove(sheet, data)
-  // fillAndColorBreadthNASI(sheet, data)
+  fillAndColorBreadthPerAbove(sheet, data)
+  fillAndColorBreadthNASI(sheet, data)
   fillAndColorBreadthNYMO(sheet, data)
 }
 
@@ -87,7 +84,7 @@ function fillAndColorBreadthPerAbove(sheet, data) {
   const endIdx = COLORING_BOOK_SUB_HEADERS.indexOf(lastField)
   const numCols = endIdx - startIdx + 1
 
-  fillBreadthValues(sheet, onlyData, DATA_START_ROW, startCol, numCols)
+  fillCellValues(sheet, onlyData, DATA_START_ROW, startCol, numCols)
 
   const breadthBackgroundColors = getBackgroundColorsForBreadthPerAbove(
     onlyData
@@ -179,7 +176,7 @@ function fillAndColorBreadthNASI(sheet, data) {
   const startCol = startIdx + 1
   const numCols = 1
 
-  fillBreadthValues(sheet, onlyData, DATA_START_ROW, startCol, numCols)
+  fillCellValues(sheet, onlyData, DATA_START_ROW, startCol, numCols)
 
   const breadthBackgroundColors = getBackgroundColorsForNASI(
     onlyData,
@@ -220,7 +217,7 @@ function fillAndColorBreadthNYMO(sheet, data) {
   const startCol = startIdx + 1
   const numCols = 1
 
-  fillBreadthValues(sheet, onlyData, DATA_START_ROW, startCol, numCols)
+  fillCellValues(sheet, onlyData, DATA_START_ROW, startCol, numCols)
 
   const breadthBackgroundColors = getBackgroundColorsForNYMO(onlyData)
   colorRange(
@@ -242,16 +239,6 @@ function fillAndColorBreadthNYMO(sheet, data) {
     startCol,
     numCols
   )
-}
-
-function fillBreadthValues(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
-  const range = sheet.getRange(
-    DATA_START_ROW,
-    startCol,
-    onlyData.length,
-    numCols
-  )
-  range.setValues(onlyData)
 }
 
 function getBackgroundColorsForBreadthPerAbove(breadthData) {

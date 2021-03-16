@@ -105,6 +105,15 @@ const FIELDS_BREADTH_PER_ABOVE = [
 const FIELDS_BREADTH_NASI = "NASI"
 const FIELDS_BREADTH_NYMO = "NYMO"
 
+const FIELDS_SENTIMENT = [
+  "CPC",
+  "VIX",
+  "NAAIM",
+  "AAII",
+  "BULL_AAII",
+  "BEAR_AAII",
+]
+
 const INDICES_MERGE_FROM_TO = ["AD", "TrendCnt"]
 const INDICES_MERGE_LENGTH = 5 // # of Cells from AD to TrendCnt
 const MERGE_CELLS_FROM_TO = [
@@ -137,12 +146,7 @@ const COLORING_BOOK_SUB_HEADERS = [
   ...FIELDS_BREADTH_PER_ABOVE,
   FIELDS_BREADTH_NASI,
   FIELDS_BREADTH_NYMO,
-  "CPC",
-  "VIX",
-  "NAAIM",
-  "AAII",
-  "BULL_AAII",
-  "BEAR_AAII",
+  ...FIELDS_SENTIMENT,
   "Leaders",
   "Notes",
 ]
