@@ -15,14 +15,10 @@ function runCalculateTest() {
 
 function calculateIndividualIndiceColoringBookData(indexName, dataVals) {
   // console.log(dataVals)
-  if (dataVals.length <= 0)
-    throw new Error("There is no data in the 'Data' sheet.")
+  if (dataVals.length <= 0) throw new Error("There is no data in the 'Data' sheet.")
 
   const headerRowData = dataVals[0]
-  const headerIdxLocations = getHeaderIdxLocationsAsDictForIndexName(
-    indexName,
-    headerRowData
-  )
+  const headerIdxLocations = getHeaderIdxLocationsAsDictForIndexName(indexName, headerRowData)
   //console.log(headerIdxLocations)
 
   return calculateIndexData(indexName, headerIdxLocations, dataVals)
@@ -56,29 +52,15 @@ function calculateIndexData(indexName, headerIdxLocations, dataVals) {
     const perFrom20ema = d[headerIdxLocations[indexName + "_PERC_FROM_20EMA"]]
     // console.log(close, ema10, ema20, perFrom20ema)
 
-    const distributedDaysData = calculateDistributedDays(
-      date,
-      dYest,
-      vol,
-      volYest,
-      perChange
-    )
+    const distributedDaysData = calculateDistributedDays(date, dYest, vol, volYest, perChange)
 
-    const [maTrenDayColor, maTrendDayCnt] = calculateMATrendDays(
-      close,
-      ema10,
-      ema20,
-      perFrom20ema
-    )
+    const [maTrenDayColor, maTrendDayCnt] = calculateMATrendDays(close, ema10, ema20, perFrom20ema)
     const maTrendDaysColors = [...Array(5)].map(() => maTrenDayColor)
     const maTrendDayCntStr = maTrendDayCnt === 1 ? "" : maTrendDayCnt // don't display a trend count of 1
 
     calculatedColors = [[date, ...maTrendDaysColors], ...calculatedColors]
 
-    calculatedData = [
-      [date, ...distributedDaysData, maTrendDayCntStr],
-      ...calculatedData,
-    ] // reverse the data, latest date first.
+    calculatedData = [[date, ...distributedDaysData, maTrendDayCntStr], ...calculatedData] // reverse the data, latest date first.
   }
 
   // console.log(calculatedData)
@@ -99,11 +81,7 @@ function calculateIndexData(indexName, headerIdxLocations, dataVals) {
 function getBreadthPerAboveStats(dataVals) {
   // return FIELDS_BREADTH_PER_ABOVE.reduce((acc, fieldName) => {
   const fields = [FIELD_DATE, ...FIELDS_BREADTH_PER_ABOVE]
-  const [headers, ...onlyData] = getDataFromFieldNames(
-    fields,
-    DATA_HEADERS,
-    dataVals
-  )
+  const [headers, ...onlyData] = getDataFromFieldNames(fields, DATA_HEADERS, dataVals)
   const dateFieldIdx = fields.indexOf(FIELD_DATE)
 
   console.log("stats received")
@@ -113,12 +91,10 @@ function getBreadthPerAboveStats(dataVals) {
 
     onlyData.forEach((od, i) => {
       // this data should only be for one column
-      const pastDataForFieldFromCurrentDay = onlyData
-        .slice(i)
-        .reduce((acc, d) => {
-          acc.push(d[fieldIdx])
-          return acc
-        }, [])
+      const pastDataForFieldFromCurrentDay = onlyData.slice(i).reduce((acc, d) => {
+        acc.push(d[fieldIdx])
+        return acc
+      }, [])
       const stats = calculateColumnDataStats(pastDataForFieldFromCurrentDay)
 
       acc[fieldName].push({
@@ -145,25 +121,19 @@ function getBreadthPerAboveStats(dataVals) {
 //             }]
 // ]
 //
-function getBreadthStats(fieldName, dataVals) {
+function getStats(fieldName, dataVals) {
   // return FIELDS_BREADTH_PER_ABOVE.reduce((acc, fieldName) => {
   const fields = [FIELD_DATE, fieldName]
-  const [headers, ...onlyData] = getDataFromFieldNames(
-    fields,
-    DATA_HEADERS,
-    dataVals
-  )
+  const [headers, ...onlyData] = getDataFromFieldNames(fields, DATA_HEADERS, dataVals)
   const dateFieldIdx = fields.indexOf(FIELD_DATE)
   const dataIdx = 1
 
   return onlyData.reduce((acc, data, i) => {
     // this data should only be for one column
-    const pastDataForFieldFromCurrentDay = onlyData
-      .slice(i)
-      .reduce((acc, d) => {
-        acc.push(d[dataIdx])
-        return acc
-      }, [])
+    const pastDataForFieldFromCurrentDay = onlyData.slice(i).reduce((acc, d) => {
+      acc.push(d[dataIdx])
+      return acc
+    }, [])
     const stats = calculateColumnDataStats(pastDataForFieldFromCurrentDay)
 
     const date = data[dateFieldIdx]

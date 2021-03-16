@@ -8,19 +8,14 @@ function colorAndFillinSentimentCells(sheet, data) {
 
   FIELDS_SENTIMENT.forEach((fieldName) => {
     const startCol = getStartColFor(fieldName)
-    if (startIdx === undefined) throw new Error(`${fieldName} is not found in the COLORING_BOOK_SUB_HEADERSs const.`)
+    if (startCol === undefined) throw new Error(`${fieldName} is not found in the COLORING_BOOK_SUB_HEADERSs const.`)
+    const [header, ...dataForField] = getDataFromFieldNames([fieldName], DATA_HEADERS, data)
 
-    colorAndFillIndividualSentimentCell(sheet, fieldName, onlyData, startCol, numCols)
+    console.log("Working on Filling Values on Sentiment Cells for " + fieldName)
+    fillCellValues(sheet, dataForField, DATA_START_ROW, startCol, numCols)
 
     const stats = getStats(fieldName, data)
-    setBreadthCellTextStylesBasedOnStdDevs(sheet, onlyData, stats, DATA_START_ROW, startCol, numCols)
+    console.log("Setting Text Styles on Sentiment Cells for " + fieldName)
+    setCellTextStylesBasedOnStdDevs(sheet, dataForField, stats, DATA_START_ROW, startCol, numCols)
   })
 }
-
-function colorAndFillIndividualSentimentCell(sheet, fieldName, data, startCol, numCols) {
-  console.log("Working on Coloring and Filling in Sentiment Cells for " + fieldName)
-  const dataForField = getDataFromFieldNames([fieldName], DATA_HEADERS, data)
-  fillCellValues(sheet, dataForField, DATA_START_ROW, startCol, numCols)
-}
-
-function setSentimentTextStyles() {}

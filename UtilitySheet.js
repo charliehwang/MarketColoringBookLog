@@ -15,16 +15,14 @@ function getDataColNum(fieldName) {
 }
 
 function getCBColNum(fieldName) {
-  if (!cbHeaders || cbHeaders.length === 0)
-    throw new Error("No Data Headers Found")
+  if (!cbHeaders || cbHeaders.length === 0) throw new Error("No Data Headers Found")
   const headers = cbHeaders[0]
   //Logger.log(headers)
   return headers.indexOf(fieldName) + 1
 }
 
 function getDataIDX(fieldName) {
-  if (!DATA_HEADERS || DATA_HEADERS.length === 0)
-    throw new Error("No Data Headers Found")
+  if (!DATA_HEADERS || DATA_HEADERS.length === 0) throw new Error("No Data Headers Found")
   //Logger.log(headers)
   return DATA_HEADERS.indexOf(fieldName)
 }
@@ -54,13 +52,7 @@ function getColDataFor(fieldName, data) {
 
   const colData = data.reduce((acc, d) => {
     if (d[idxNum] === undefined)
-      throw new Error(
-        "Data for column: " +
-          fieldName +
-          " with col number: " +
-          colNum +
-          " does not exist."
-      )
+      throw new Error("Data for column: " + fieldName + " with col number: " + colNum + " does not exist.")
 
     const date = d[DATE_COL - 1]
     acc.push([date, d[idxNum]])
@@ -136,17 +128,39 @@ function filterDataWithFromIndexes(wantedFieldIdxs, data) {
 }
 
 function fillCellValues(sheet, onlyData, DATA_START_ROW, startCol, numCols) {
-  const range = sheet.getRange(
-    DATA_START_ROW,
-    startCol,
-    onlyData.length,
-    numCols
-  )
+  const range = sheet.getRange(DATA_START_ROW, startCol, onlyData.length, numCols)
   range.setValues(onlyData)
 }
 
 function getStartColFor(fieldName) {
-  const startIdx = COLORING_BOOK_SUB_HEADERS.indexOf(firstField)
+  const startIdx = COLORING_BOOK_SUB_HEADERS.indexOf(fieldName)
   if (startIdx === -1) return undefined
   return startIdx + 1
+}
+
+function setCellTextStylesBasedOnStdDevs(sheet, onlyData, stats, DATA_START_ROW, startCol, numCols) {
+  const range = sheet.getRange(DATA_START_ROW, startCol, onlyData.length, numCols)
+
+  const styles = onlyData.reduce((acc, d, i) => {
+    const val = d[0]
+
+    const [date, ...statsData] = stats[i]
+    const { average, stdDev, posFirstStdDev, posSecondStdDev, negFirstStdDev, negSecondStdDev } = statsData[0]
+
+    let textStyle = TEXT_STYLE_MED_DARK
+    if (val >= posSecondStdDev) {
+      textStyle = TEXT_STYLE_POS_STD_DEV2
+    } else if (val >= posFirstStdDev) {
+      textStyle = TEXT_STYLE_POS_STD_DEV
+    } else if (val <= negSecondStdDev) {
+      textStyle = TEXT_STYLE_NEG_STD_DEV2
+    } else if (val <= negFirstStdDev) {
+      textStyle = TEXT_STYLE_NEG_STD_DEV
+    }
+    acc.push([textStyle])
+
+    return acc
+  }, [])
+
+  range.setTextStyles(styles)
 }
